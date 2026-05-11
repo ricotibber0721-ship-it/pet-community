@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { signIn } from '@/app/auth/actions'
+import { GoogleButton } from '@/app/auth/google-button'
 
 export default async function LoginPage(props: PageProps<'/login'>) {
   const sp = await props.searchParams
@@ -49,6 +50,17 @@ export default async function LoginPage(props: PageProps<'/login'>) {
             로그인
           </button>
         </form>
+
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-gray-200"></div>
+          </div>
+          <div className="relative flex justify-center text-xs">
+            <span className="bg-white px-2 text-gray-500">또는</span>
+          </div>
+        </div>
+
+        <GoogleButton label="Google로 로그인" />
 
         <p className="text-center text-sm text-gray-600">
           계정이 없으신가요?{' '}

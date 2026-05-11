@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { signUp } from '@/app/auth/actions'
+import { GoogleButton } from '@/app/auth/google-button'
 
 export default async function SignupPage(props: PageProps<'/signup'>) {
   const sp = await props.searchParams
@@ -62,6 +63,17 @@ export default async function SignupPage(props: PageProps<'/signup'>) {
                 가입하기
               </button>
             </form>
+
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-200"></div>
+              </div>
+              <div className="relative flex justify-center text-xs">
+                <span className="bg-white px-2 text-gray-500">또는</span>
+              </div>
+            </div>
+
+            <GoogleButton label="Google로 가입" />
 
             <p className="text-center text-sm text-gray-600">
               이미 계정이 있으신가요?{' '}
