@@ -11,6 +11,7 @@ export function HospitalsClient() {
   const [hospitals, setHospitals] = useState<Hospital[]>([])
   const [hasLocation, setHasLocation] = useState(false)
   const [query, setQuery] = useState('동물병원')
+  const [resolvedQuery, setResolvedQuery] = useState<string | null>(null)
 
   async function search(opts: { useLocation: boolean }) {
     setError(null)
@@ -62,6 +63,7 @@ export function HospitalsClient() {
         throw new Error(data?.error ?? '검색에 실패했어요.')
       }
       setHospitals(data.hospitals ?? [])
+      setResolvedQuery(data.query ?? null)
       setStatus('done')
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : '검색에 실패했어요.')
@@ -122,6 +124,12 @@ export function HospitalsClient() {
             다른 검색어로 시도해보세요!
           </p>
         </div>
+      )}
+
+      {hospitals.length > 0 && resolvedQuery && (
+        <p className="text-center text-xs text-gray-500">
+          🔎 <span className="font-semibold text-gray-700">{resolvedQuery}</span> 검색 결과
+        </p>
       )}
 
       {hospitals.length > 0 && (

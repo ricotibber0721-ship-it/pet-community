@@ -46,11 +46,36 @@ function distanceKm(lat1: number, lng1: number, lat2: number, lng2: number) {
   return 2 * R * Math.asin(Math.sqrt(a))
 }
 
+async function reverseGeocodeKr(lat: number, lng: number): Promise<string | null> {
+  try {
+    const url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=ko`
+    const res = await fetch(url, { cache: 'no-store' })
+    if (!res.ok) return null
+    const data = (await res.json()) as {
+      locality?: string
+      city?: string
+      principalSubdivision?: string
+    }
+    return data.locality || data.city || data.principalSubdivision || null
+  } catch {
+    return null
+  }
+}
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
   const lat = parseFloat(searchParams.get('lat') ?? '')
   const lng = parseFloat(searchParams.get('lng') ?? '')
-  const query = (searchParams.get('q') ?? '동물병원').slice(0, 50)
+  const rawQuery = (searchParams.get('q') ?? '').slice(0, 50).trim()
+  const hasCoords = Number.isFinite(lat) && Number.isFinite(lng)
+
+  let query = rawQuery || '동물병원'
+  if (hasCoords && (!rawQuery || rawQuery === '동물병원')) {
+    const region = await reverseGeocodeKr(lat, lng)
+    if (region) {
+      query = `${region} 동물병원`
+    }
+  }
 
   const id = process.env.NAVER_CLIENT_ID
   const secret = process.env.NAVER_CLIENT_SECRET
@@ -85,8 +110,6 @@ export async function GET(request: Request) {
 
   const data: { items: NaverItem[] } = await res.json()
 
-  const hasCoords = Number.isFinite(lat) && Number.isFinite(lng)
-
   const hospitals: Hospital[] = (data.items ?? []).map((item) => {
     const placeLng = parseFloat(item.mapx) / 1e7
     const placeLat = parseFloat(item.mapy) / 1e7
@@ -109,5 +132,5 @@ export async function GET(request: Request) {
     hospitals.sort((a, b) => (a.distanceKm ?? 0) - (b.distanceKm ?? 0))
   }
 
-  return NextResponse.json({ hospitals })
+  return NextResponse.json({ hospitals, query })
 }
