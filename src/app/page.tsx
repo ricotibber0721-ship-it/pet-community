@@ -19,6 +19,12 @@ export default async function HomePage() {
             <p className="text-gray-700">
               <span className="font-semibold">{user.email}</span> 님, 환영해요!
             </p>
+            <Link
+              href="/board"
+              className="block w-full bg-blue-600 text-white font-semibold rounded-md py-2 hover:bg-blue-700 transition"
+            >
+              자유게시판 가기
+            </Link>
             <form action={signOut}>
               <button
                 type="submit"
@@ -30,6 +36,12 @@ export default async function HomePage() {
           </div>
         ) : (
           <div className="space-y-3">
+            <Link
+              href="/board"
+              className="block w-full bg-gray-100 text-gray-800 font-semibold rounded-md py-2 hover:bg-gray-200 transition"
+            >
+              자유게시판 둘러보기
+            </Link>
             <Link
               href="/login"
               className="block w-full bg-blue-600 text-white font-semibold rounded-md py-2 hover:bg-blue-700 transition"
