@@ -109,6 +109,25 @@ export default async function HomePage() {
               들어가러 가기 →
             </span>
           </Link>
+
+          <Link
+            href="/hospitals"
+            className="group relative overflow-hidden rounded-3xl border-2 border-[#d4f1e6] bg-gradient-to-br from-[#e9faf2] to-[#f5fcf8] p-7 transition hover:-translate-y-1 hover:shadow-[0_16px_40px_-12px_rgba(100,200,150,0.3)] sm:col-span-2"
+          >
+            <span className="absolute top-3 right-3 text-2xl opacity-30 group-hover:opacity-70 group-hover:rotate-12 transition">
+              📍
+            </span>
+            <div className="text-5xl mb-3 inline-block group-hover:animate-wiggle">🏥</div>
+            <h3 className="text-xl font-extrabold text-gray-900">내 주변 동물병원</h3>
+            <p className="mt-1.5 text-sm text-gray-600 leading-relaxed">
+              우리 아이 아플 때 빠르게,
+              <br />
+              가까운 병원을 찾아드려요!
+            </p>
+            <span className="mt-5 inline-flex items-center text-sm font-bold text-[#10b981] group-hover:translate-x-1 transition">
+              병원 찾으러 가기 →
+            </span>
+          </Link>
         </div>
       </section>
 

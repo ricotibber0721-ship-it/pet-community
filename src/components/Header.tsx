@@ -33,6 +33,12 @@ export async function Header() {
           >
             채팅
           </Link>
+          <Link
+            href="/hospitals"
+            className="px-3 py-2 rounded-full text-gray-600 hover:text-[#ff6b47] hover:bg-[#fff8f3] transition"
+          >
+            병원찾기
+          </Link>
 
           {user ? (
             <form action={signOut} className="ml-1">
