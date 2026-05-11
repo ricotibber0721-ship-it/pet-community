@@ -63,43 +63,50 @@ export function ChatClient({
   }
 
   return (
-    <div className="flex flex-col h-[calc(100vh-8rem)] bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-      <div className="flex-1 overflow-y-auto p-4 space-y-2 bg-gray-50">
+    <div className="flex flex-col h-[calc(100vh-12rem)] bg-white rounded-3xl shadow-[0_8px_30px_-12px_rgba(255,107,71,0.2)] border-2 border-[#ffe5d9]/40 overflow-hidden">
+      <div className="flex-1 overflow-y-auto px-4 py-5 space-y-3 bg-gradient-to-b from-[#fff8f3] to-white">
         {messages.length === 0 ? (
-          <p className="text-center text-gray-400 text-sm mt-8">
-            아직 메시지가 없어요. 첫 메시지를 보내보세요!
-          </p>
+          <div className="text-center mt-16">
+            <div className="text-5xl mb-3 animate-wiggle inline-block">🐾</div>
+            <p className="text-gray-400 text-sm leading-relaxed">
+              아직 메시지가 없어요.
+              <br />
+              먼저 인사 한 마디 어때요? 🤗
+            </p>
+          </div>
         ) : (
-          messages.map((m) => {
+          messages.map((m, i) => {
             const mine = m.user_id === userId
+            const prev = messages[i - 1]
+            const showAuthor = !mine && (!prev || prev.user_id !== m.user_id)
             return (
               <div
                 key={m.id}
-                className={`flex ${mine ? 'justify-end' : 'justify-start'}`}
+                className={`flex ${mine ? 'justify-end' : 'justify-start'} animate-pop`}
               >
-                <div
-                  className={`max-w-[75%] rounded-2xl px-3 py-2 text-sm ${
-                    mine
-                      ? 'bg-blue-600 text-white rounded-br-sm'
-                      : 'bg-white text-gray-900 border border-gray-200 rounded-bl-sm'
-                  }`}
-                >
-                  {!mine && (
-                    <div className="text-xs font-semibold mb-0.5 text-blue-700">
-                      {m.author_email}
-                    </div>
+                <div className={`max-w-[78%] ${mine ? 'items-end' : 'items-start'} flex flex-col`}>
+                  {showAuthor && (
+                    <span className="text-[11px] font-semibold text-gray-500 mb-1 px-2 flex items-center gap-1">
+                      <span>🐾</span> {m.author_email}
+                    </span>
                   )}
-                  <div className="whitespace-pre-wrap break-words">{m.content}</div>
                   <div
-                    className={`text-[10px] mt-1 ${
-                      mine ? 'text-blue-100' : 'text-gray-400'
+                    className={`rounded-3xl px-4 py-2.5 text-sm leading-relaxed ${
+                      mine
+                        ? 'bg-gradient-to-br from-[#ff8a6f] to-[#ff6b47] text-white rounded-br-md shadow-[0_4px_12px_-2px_rgba(255,107,71,0.4)]'
+                        : 'bg-white text-gray-900 border-2 border-[#ffe5d9]/60 rounded-bl-md shadow-sm'
                     }`}
+                  >
+                    <div className="whitespace-pre-wrap break-words">{m.content}</div>
+                  </div>
+                  <span
+                    className={`text-[10px] mt-1 px-2 text-gray-400`}
                   >
                     {new Date(m.created_at).toLocaleTimeString('ko-KR', {
                       hour: '2-digit',
                       minute: '2-digit',
                     })}
-                  </div>
+                  </span>
                 </div>
               </div>
             )
@@ -109,29 +116,29 @@ export function ChatClient({
       </div>
 
       {error && (
-        <div className="px-4 py-2 text-sm text-red-600 bg-red-50 border-t border-red-200">
+        <div className="px-4 py-2 text-xs text-red-600 bg-red-50 border-t border-red-100">
           {error}
         </div>
       )}
 
       <form
         onSubmit={handleSubmit}
-        className="border-t border-gray-200 p-3 flex gap-2 bg-white"
+        className="border-t border-[#ffe5d9]/60 p-3 flex gap-2 bg-white"
       >
         <input
           type="text"
           value={text}
           onChange={(e) => setText(e.target.value)}
-          placeholder="메시지를 입력하세요"
+          placeholder="메시지를 입력하세요 💬"
           maxLength={1000}
-          className="flex-1 rounded-full border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="flex-1 rounded-full border-2 border-gray-100 px-5 py-3 text-sm focus:outline-none focus:border-[#ff6b47] focus:bg-[#fff8f3] transition"
         />
         <button
           type="submit"
           disabled={isPending || !text.trim()}
-          className="rounded-full bg-blue-600 text-white font-semibold px-5 py-2 hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+          className="rounded-full bg-[#ff6b47] text-white font-bold px-6 py-3 text-sm hover:bg-[#e5573a] transition disabled:opacity-40 disabled:cursor-not-allowed shadow-[0_4px_12px_-2px_rgba(255,107,71,0.4)] hover:scale-105"
         >
-          전송
+          전송 ✨
         </button>
       </form>
     </div>
