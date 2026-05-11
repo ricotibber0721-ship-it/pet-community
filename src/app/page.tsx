@@ -25,6 +25,12 @@ export default async function HomePage() {
             >
               자유게시판 가기
             </Link>
+            <Link
+              href="/chat"
+              className="block w-full bg-emerald-600 text-white font-semibold rounded-md py-2 hover:bg-emerald-700 transition"
+            >
+              실시간 채팅 가기
+            </Link>
             <form action={signOut}>
               <button
                 type="submit"
